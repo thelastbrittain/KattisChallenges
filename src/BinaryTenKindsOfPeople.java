@@ -9,9 +9,27 @@ public class BinaryTenKindsOfPeople {
         Integer mapRows = getRows();
         Integer mapCols = getCols();
         ArrayList<ArrayList<Integer>> binaryMap = getMap(mapRows, mapCols);
+        Integer numberOfQuerries = getNumOfQuerries();
+        ArrayList<ArrayList<Integer>> querries = getQuerries(numberOfQuerries);
 
 
 
+    }
+
+    private static ArrayList<ArrayList<Integer>> getQuerries(Integer numberOfQuerries) {
+        ArrayList<ArrayList<Integer>> querryList = new ArrayList<>();
+        for (int i = 0; i < numberOfQuerries; i++){
+            ArrayList<Integer> digitList = new ArrayList<>();
+            for (int j = 0; j < 4; j++){
+                digitList.add(s.nextInt());
+            }
+            querryList.add(digitList);
+        }
+        return querryList;
+    }
+
+    private static Integer getNumOfQuerries() {
+        return s.nextInt();
     }
 
     private static ArrayList<ArrayList<Integer>> getMap(Integer mapRows, Integer mapCols) {
