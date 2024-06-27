@@ -39,13 +39,14 @@ public class BinaryTenKindsOfPeople {
     private static void solveQuerry(ArrayList<Integer> querry, ArrayList<ArrayList<Integer>> binaryMap) {
         position startPostion = new position(querry.get(0), querry.get(1));
         position endPosition = new position(querry.get(2), querry.get(3));
+        ArrayList<position> previouslyVisitedLocations = new ArrayList<>();
         if (startIsBinary(startPostion, binaryMap)){
-            if (solveCase(startPostion, endPosition,null, binaryMap, 0)){
+            if (solveCase(startPostion, endPosition,null, binaryMap, 0, previouslyVisitedLocations)){
                 System.out.println("binary");
                 return;
             }
         } else {
-            if (solveCase(startPostion, endPosition,null, binaryMap, 1)){
+            if (solveCase(startPostion, endPosition,null, binaryMap, 1, previouslyVisitedLocations)){
                 System.out.println("decimal");
                 return;
             }
@@ -53,26 +54,29 @@ public class BinaryTenKindsOfPeople {
         System.out.println("neither");
     }
 
-    private static boolean solveCase(position startPostion, position endPosition, position previousPosition, ArrayList<ArrayList<Integer>> binaryMap, int number) {
+    private static boolean solveCase(position startPostion, position endPosition, position previousPosition, ArrayList<ArrayList<Integer>> binaryMap, int number, ArrayList<position> previouslyVisitedLocations) {
+        if (previousPosition!= null){
+            previouslyVisitedLocations.add(previousPosition);
+        }
         if (notInRange(startPostion, binaryMap)) {
             return false;
         }
         if (wrongType(startPostion, binaryMap, number)){
             return false;
         }
-        if (startPostion.equals(previousPosition)) {
+        if (previouslyVisitedLocations.contains(startPostion)) {
             return false;
         }
         if (startPostion == endPosition) {
             return true;
         }
-        if (solveCase(new position(startPostion.row - 1, startPostion.column), endPosition, startPostion, binaryMap, number)) {
+        if (solveCase(new position(startPostion.row - 1, startPostion.column), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
             return true;
-        } else if (solveCase(new position(startPostion.row + 1, startPostion.column), endPosition, startPostion, binaryMap, number)) {
+        } else if (solveCase(new position(startPostion.row + 1, startPostion.column), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
             return true;
-        } else if (solveCase(new position(startPostion.row, startPostion.column + 1), endPosition, startPostion, binaryMap, number)) {
+        } else if (solveCase(new position(startPostion.row, startPostion.column + 1), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
             return true;
-        } else return solveCase(new position(startPostion.row, startPostion.column - 1), endPosition, startPostion, binaryMap, number);
+        } else return solveCase(new position(startPostion.row, startPostion.column - 1), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations);
     }
 
     private static boolean wrongType(position startPostion, ArrayList<ArrayList<Integer>> binaryMap, int number) {
@@ -83,9 +87,9 @@ public class BinaryTenKindsOfPeople {
     }
 
     private static boolean notInRange(position startPostion,ArrayList<ArrayList<Integer>> binaryMap ) {
-        if (startPostion.row < 1 || startPostion.row > (binaryMap.getFirst().size() + 1)){
+        if (startPostion.row < 1 || startPostion.row > (binaryMap.size())){
             return true;
-        } else if (startPostion.column < 1 || startPostion.column > (binaryMap.getFirst().size() + 1)){
+        } else if (startPostion.column < 1 || startPostion.column > (binaryMap.getFirst().size())){
             return true;
         }
         return false;
@@ -116,9 +120,9 @@ public class BinaryTenKindsOfPeople {
 
     private static ArrayList<ArrayList<Integer>> getMap(Integer mapRows, Integer mapCols) {
         ArrayList<ArrayList<Integer>> binaryMap = new ArrayList<>();
-        for (int i = 0; i < mapCols; i++){
+        for (int i = 0; i < mapRows; i++){
             String lineNumbers = Long.toString(s.nextInt());
-            assert lineNumbers.length() == mapRows;
+            assert lineNumbers.length() == mapCols;
             ArrayList<Integer> digitList = new ArrayList<>();
             for (char c : lineNumbers.toCharArray()){
                 Integer number = Character.getNumericValue(c);
