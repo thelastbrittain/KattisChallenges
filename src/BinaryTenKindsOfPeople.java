@@ -1,24 +1,8 @@
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class BinaryTenKindsOfPeople {
     private static Scanner s = new Scanner(System.in);
-    public record position(int row, int column){
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            position position = (position) o;
-            return row == position.row && column == position.column;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(row, column);
-        }
-    }
+    public record position(int row, int column){}
 
     public static void main(String[] args){
         Integer mapRows = s.nextInt();
@@ -27,8 +11,6 @@ public class BinaryTenKindsOfPeople {
         Integer numberOfQuerries = s.nextInt();;
         ArrayList<ArrayList<Integer>> querries = getQuerries(numberOfQuerries);
         solveQuerries(querries, binaryMap);
-
-
     }
 
     private static void solveQuerries(ArrayList<ArrayList<Integer>> querries, ArrayList<ArrayList<Integer>> binaryMap ) {
@@ -40,7 +22,7 @@ public class BinaryTenKindsOfPeople {
     private static void solveQuerry(ArrayList<Integer> querry, ArrayList<ArrayList<Integer>> binaryMap) {
         position startPostion = new position(querry.get(0), querry.get(1));
         position endPosition = new position(querry.get(2), querry.get(3));
-        ArrayList<position> previouslyVisitedLocations = new ArrayList<>();
+        Set<position> previouslyVisitedLocations = new HashSet<>();
         if (startIsBinary(startPostion, binaryMap)){
             if (solveCase(startPostion, endPosition,null, binaryMap, 0, previouslyVisitedLocations)){
                 System.out.println("binary");
@@ -55,10 +37,7 @@ public class BinaryTenKindsOfPeople {
         System.out.println("neither");
     }
 
-    private static boolean solveCase(position startPostion, position endPosition, position previousPosition, ArrayList<ArrayList<Integer>> binaryMap, int number, ArrayList<position> previouslyVisitedLocations) {
-        if (previousPosition!= null){
-            previouslyVisitedLocations.add(previousPosition);
-        }
+    private static boolean solveCase(position startPostion, position endPosition, position previousPosition, ArrayList<ArrayList<Integer>> binaryMap, int number, Set<position> previouslyVisitedLocations) {
         if (notInRange(startPostion, binaryMap)) {
             return false;
         }
@@ -71,6 +50,9 @@ public class BinaryTenKindsOfPeople {
         if (startPostion.equals(endPosition)) {
             return true;
         }
+
+        previouslyVisitedLocations.add(startPostion);
+
         if (solveCase(new position(startPostion.row - 1, startPostion.column), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
             return true;
         } else if (solveCase(new position(startPostion.row + 1, startPostion.column), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
@@ -90,7 +72,7 @@ public class BinaryTenKindsOfPeople {
     private static boolean notInRange(position startPostion,ArrayList<ArrayList<Integer>> binaryMap ) {
         if (startPostion.row < 1 || startPostion.row > (binaryMap.size())){
             return true;
-        } else if (startPostion.column < 1 || startPostion.column > (binaryMap.getFirst().size())){
+        } else if (startPostion.column < 1 || startPostion.column > (binaryMap.get(0).size())){
             return true;
         }
         return false;
