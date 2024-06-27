@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -116,12 +117,10 @@ public class BinaryTenKindsOfPeople {
         return querryList;
     }
 
-
-
     private static ArrayList<ArrayList<Integer>> getMap(Integer mapRows, Integer mapCols) {
         ArrayList<ArrayList<Integer>> binaryMap = new ArrayList<>();
         for (int i = 0; i < mapRows; i++){
-            String lineNumbers = Long.toString(s.nextInt());
+            String lineNumbers = String.valueOf((s.nextBigInteger()));
             assert lineNumbers.length() == mapCols;
             ArrayList<Integer> digitList = new ArrayList<>();
             for (char c : lineNumbers.toCharArray()){
