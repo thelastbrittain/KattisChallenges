@@ -67,7 +67,7 @@ public class BinaryTenKindsOfPeople {
         if (previouslyVisitedLocations.contains(startPostion)) {
             return false;
         }
-        if (startPostion == endPosition) {
+        if (startPostion.equals(endPosition)) {
             return true;
         }
         if (solveCase(new position(startPostion.row - 1, startPostion.column), endPosition, startPostion, binaryMap, number, previouslyVisitedLocations)) {
