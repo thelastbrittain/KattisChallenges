@@ -120,7 +120,7 @@ public class BinaryTenKindsOfPeople {
     private static ArrayList<ArrayList<Integer>> getMap(Integer mapRows, Integer mapCols) {
         ArrayList<ArrayList<Integer>> binaryMap = new ArrayList<>();
         for (int i = 0; i < mapRows; i++){
-            String lineNumbers = String.valueOf((s.nextBigInteger()));
+            String lineNumbers = (s.next());
             assert lineNumbers.length() == mapCols;
             ArrayList<Integer> digitList = new ArrayList<>();
             for (char c : lineNumbers.toCharArray()){
